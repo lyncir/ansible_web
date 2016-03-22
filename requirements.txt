@@ -1,8 +1,15 @@
+Flask==0.10.1
+Flask-SQLAlchemy==2.1
+Flask-Script==2.0.5
 Jinja2==2.8
 MarkupSafe==0.23
+MySQL-python==1.2.5
 PyYAML==3.11
+SQLAlchemy==1.0.12
+Werkzeug==0.11.4
 ansible==2.0.1.0
 ecdsa==0.13
+itsdangerous==0.24
 paramiko==1.16.0
 pycrypto==2.6.1
 wsgiref==0.1.2

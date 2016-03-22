@@ -1,2 +1,8 @@
 *.pyc
 *.log
+
+# virtualenv
+env/
+
+# test config
+instance/
