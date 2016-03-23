@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from app import db
+from . import db
+from .users.models import *
 
 
 class Hosts(db.Model):

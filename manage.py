@@ -13,9 +13,12 @@ def hello():
 
 @manager.command
 def init_db():
-    print 'ready create database tables'
     db.create_all()
-    print 'end create database tables'
+
+
+@manager.command
+def runserver():
+    app.run(host='0.0.0.0')
 
 if __name__ == '__main__':
     manager.run()

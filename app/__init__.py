@@ -11,10 +11,8 @@ app.config.from_pyfile('config.py', silent=True)
 db = SQLAlchemy(app)
 
 
-@app.route('/')
-def index():
-    return 'hello!'
-
-
 # models
-from models import Hosts
+from models import *
+
+# views
+from views import *
