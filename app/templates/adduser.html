@@ -1,0 +1,16 @@
+<form action={{ url_for('adduser')}} method="post">
+	{{ form.hidden_tag() if form.hidden_tag }}
+	{{ form.username.label }} {{ form.username }}
+	{% if form.username.errors %}
+		{% for e in form.username.errors %}
+		<p>{{ e }}</p>
+		{% endfor %}
+	{% endif %}
+	{{ form.password.label }} {{ form.password }}
+	{% if form.password.errors %}
+		{% for e in form.password.errors %}
+		<p>{{ e }}</p>
+		{% endfor %}
+	{% endif %}
+	<input type=submit value='submit'>
+</form>

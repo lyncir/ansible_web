@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<form action={{ url_for('profile', username=current_user.username) }} method="post">
+		{{ form.hidden_tag() if form.hidden_tag }}
+		{{ form.username(type='hidden', value=current_user.username) }}
+		{{ form.old_password.label }} {{ form.old_password }}
+		{% if form.old_password.errors %}
+			{% for e in form.old_password.errors %}
+			<p>{{ e }}</p>
+			{% endfor %}
+		{% endif %}
+		{{ form.new_password.label }} {{ form.new_password }}
+		{% if form.new_password.errors %}
+			{% for e in form.new_password.errors %}
+			<p>{{ e }}</p>
+			{% endfor %}
+		{% endif %}
+		{{ form.confirm_password.label }} {{ form.confirm_password }}
+		{% if form.confirm_password.errors %}
+			{% for e in form.confirm_password.errors %}
+			<p>{{ e }}</p>
+			{% endfor %}
+		{% endif %}
+		<input type=submit value='submit'>
+	</form>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% if current_user.is_authenticated() %}
+	Hi {{ current_user.username }} / <a href={{ url_for("logout") }}>logout</a> / <a href={{ url_for('profile', username=current_user.username) }}>profile</a>
+{% else %}
+<a href={{ url_for("login") }}>login</a>
+{% endif %}
+
+{% block content %}
+{% endblock %}
