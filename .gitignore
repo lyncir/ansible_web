@@ -6,3 +6,6 @@ env/
 
 # test config
 instance/
+
+# vim swap file
+.*.swp
