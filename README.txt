@@ -4,4 +4,4 @@ ansible web write by flask
 2. python manage.py init_db
 3. python manage.py createsuperuser
 4. python manage.py runserver
-5. celery -A app worker
+5. celery -A app.celery worker

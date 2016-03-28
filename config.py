@@ -15,4 +15,8 @@ DEBUG = False
 SQLALCHEMY_DATABASE_URI = 'mysql://username:password@server/db'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+# BROKER
+CELERY_BROKER_URL = 'amqp://guest@localhost//'
+CELERY_RESULT_BACKEND = 'amqp://guest@locahost//'
+
 del os
