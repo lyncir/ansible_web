@@ -9,3 +9,6 @@ instance/
 
 # vim swap file
 .*.swp
+
+# test file
+test.py

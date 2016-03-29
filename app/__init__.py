@@ -72,9 +72,11 @@ def permision(func):
     def decorated_view(*args, **kwargs):
         if not current_user.is_authenticated:
             return current_app.login_manager.unauthorized()
-        results = {'re_strs': '/*'}
+        query1 = db.session.query(roles_users, roles_routes.c.route_id).join(roles_routes, roles_users.c.role_id==roles_routes.c.role_id).subquery()
+        query2 = db.session.query(User, query1.c.role_id, query1.c.route_id).outerjoin(query1, User.id==query1.c.user_id).subquery()
+        query3 = db.session.query(query2, Route.path).outerjoin(Route, query2.c.route_id==Route.id).filter(query2.c.username==current_user.username)
+        re_strs = ','.join([i.path for i in query3])
         uri = unicode(request.url_rule)
-        re_strs = results.get('re_strs')
         if re_strs:
             match = False
             for re_str in re_strs.split(','):

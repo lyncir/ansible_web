@@ -4,7 +4,9 @@ from . import db
 from .users.models import *
 
 
-class Hosts(db.Model):
+class Host(db.Model):
+    __tablename__ = 'Hosts'
+
     id = db.Column(db.Integer, primary_key=True)
     alias = db.Column(db.String(20), unique=True)
     ip = db.Column(db.String(15))

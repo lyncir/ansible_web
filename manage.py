@@ -15,15 +15,19 @@ def createsuperuser():
     '''
     username = prompt("username", default='admin')
     password = prompt_pass('Password')
-    role = Role(name='administrators')
-    user = User(username=username,
-                password=bcrypt.generate_password_hash(password),
-                active=1)
-    route = Route(path='/*')
-    role.users.append(user)
-    role.routes.append(route)
-    db.session.add(role)
-    db.session.commit()
+    confirm_password = prompt_pass('Retype Password')
+    if password == confirm_password:
+        role = Role(name='administrators')
+        user = User(username=username,
+                    password=bcrypt.generate_password_hash(password),
+                    active=1)
+        route = Route(path='/*')
+        role.users.append(user)
+        role.routes.append(route)
+        db.session.add(role)
+        db.session.commit()
+    else:
+        print "Sorry, passwords do not match."
 
 
 @manager.command
