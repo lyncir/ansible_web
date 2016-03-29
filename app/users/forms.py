@@ -7,7 +7,7 @@ from flask.ext.login import current_user
 from wtforms import fields, validators
 
 from .. import bcrypt
-from ..users.models import Users
+from ..users.models import User
 
 
 def is_safe_url(target):
@@ -55,7 +55,7 @@ class LoginForm(RedirectForm):
             raise validators.ValidationError("Username or Password Error!")
 
     def get_user(self):
-        user = Users.query.filter_by(username=self.username.data, active=1).first()
+        user = User.query.filter_by(username=self.username.data, active=1).first()
         return user
 
 

@@ -8,8 +8,8 @@ from werkzeug.exceptions import Forbidden
 from flask import Flask, g, render_template, redirect, url_for, session, \
         request, current_app
 from flask_sqlalchemy import SQLAlchemy
-from flask.ext.login import LoginManager, UserMixin, login_user, current_user, \
-        logout_user, login_required
+from flask.ext.login import LoginManager, UserMixin, login_user, \
+        current_user, logout_user, login_required
 from flask.ext.bcrypt import Bcrypt
 
 
@@ -20,7 +20,7 @@ app.config.from_pyfile('config.py', silent=True)
 # flask-sqlalchemy
 db = SQLAlchemy(app)
 
-# celery
+
 def make_celery(app):
     celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
     celery.conf.update(app.config)
@@ -35,6 +35,7 @@ def make_celery(app):
     celery.Task = ContextTask
     return celery
 
+# celery
 celery = make_celery(app)
 
 # flask bcrypt
@@ -47,34 +48,11 @@ login_manager.init_app(app)
 login_manager.login_vieww = 'login'
 
 
-class User(UserMixin):
-
-    def __init__(self, query):
-        self.id = query.id
-        self.username = query.username
-        self.password = query.password
-        self.active = query.active
-
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        if self.active == 1:
-            return True
-        else:
-            return False
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return unicode(self.id)
-
-
 @login_manager.user_loader
 def load_user(user_id):
-    user = Users.query.get(user_id)
-    return User(user)
+    from users.models import User
+
+    return User.query.get(user_id)
 
 
 def uri_match(re_str, uri):
@@ -89,6 +67,7 @@ def uri_match(re_str, uri):
 
 
 def permision(func):
+
     @wraps(func)
     def decorated_view(*args, **kwargs):
         if not current_user.is_authenticated:
@@ -111,6 +90,6 @@ def permision(func):
     return decorated_view
 
 
+# import all models, views
 from models import *
 from views import *
-from forms import *

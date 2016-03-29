@@ -3,9 +3,9 @@
 from flask import render_template, redirect, url_for, g, abort
 from flask.ext.login import login_user, logout_user, current_user
 
-from .. import app, permision, User, bcrypt, db
+from .. import app, permision, bcrypt, db
 from ..users.forms import LoginForm, AddUserForm, ChangedPasswordForm
-from ..users.models import Users
+from ..users.models import User
 
 
 #@app.route('/login', methods=['GET', 'POST'])
@@ -13,7 +13,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = form.get_user()
-        login_user(User(user))
+        login_user(user)
         return form.redirect('index')
     return render_template('login.html', form=form)
 
@@ -26,15 +26,15 @@ def logout():
 
 
 #@app.route('/user/add')
-#@permision
+@permision
 def adduser():
     form = AddUserForm()
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        user = Users(username=username,
-                     password=bcrypt.generate_password_hash(password), 
-                     active=1)
+        user = User(username=username,
+                    password=bcrypt.generate_password_hash(password), 
+                    active=1)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('index'))
