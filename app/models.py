@@ -5,7 +5,7 @@ from .users.models import *
 
 
 class Host(db.Model):
-    __tablename__ = 'Hosts'
+    __tablename__ = 'hosts'
 
     id = db.Column(db.Integer, primary_key=True)
     alias = db.Column(db.String(20), unique=True)

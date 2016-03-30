@@ -13,6 +13,5 @@ app.add_url_rule('/user/add', view_func=users.adduser, methods=['GET', 'POST'])
 app.add_url_rule('/user/<username>/profile', view_func=users.profile, methods=['GET', 'POST'])
 
 @app.route('/')
-@permision
 def index():
-    return render_template('index.html', current_user=current_user)
+    return render_template('login.html', current_user=current_user)
