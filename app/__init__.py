@@ -55,4 +55,4 @@ def load_user(user_id):
 # import all models, views, api
 from models import *
 from views import *
-from api import *
+from rest.api import *
