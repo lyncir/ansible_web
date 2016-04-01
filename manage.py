@@ -17,9 +17,8 @@ def createuser():
     password = prompt_pass('Password')
     confirm_password = prompt_pass('Retype Password')
     if password == confirm_password:
-        user = User(username=username,
-                    password=bcrypt.generate_password_hash(password),
-                    active=1)
+        user = User(username=username, is_active=1)
+        user.generate_password(password)
         db.session.add(user)
         db.session.commit()
     else:

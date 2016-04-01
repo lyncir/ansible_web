@@ -8,50 +8,57 @@ from ...models import User
 
 
 @swagger.model
-class UserWithResourceFields:
+class UserResourceFields:
     resource_fields = {
         "id": fields.Integer,
         "username": fields.String,
-        "active": fields.Boolean
+        "is_active": fields.Boolean
     }
 
 
 class UserResource(Resource):
     "User Api"
     @swagger.operation(
-        notes='get a user by id',
-        responseClass=UserWithResourceFields.__name__,
-        nickname='get',
-        parameters=[
-            {
-                "name": "user_id",
-                "description": "The id of the User",
-                "required": True,
-                "allowMultiple": False,
-                "dataType": UserWithResourceFields.__name__,
-                "paramType": "path"
-            },
-        ])
-    @marshal_with(UserWithResourceFields.resource_fields)
-    def get(self, user_id):
-        user = User.query.get(user_id)
+        notes='Get the authenticated user',
+    )
+    @marshal_with(UserResourceFields.resource_fields)
+    def get(self):
+        user = User.query.get(1)
         return user
 
-    def post(self):
-        '''update'''
+    @swagger.operation(
+        notes="Update the authenticated user"
+    )
+    def patch(self):
         pass
 
-    def delete(self):
-        '''delete'''
-        pass
 
+class UsersResource(Resource):
 
-class UserCollectionResource(Resource):
-
+    @swagger.operation(
+        notes="Get all users"
+    )
     def get(self):
-        '''query users'''
         pass
 
-    def post(self):
-        '''create user'''
-        pass
+
+class UserOtherResource(Resource):
+
+    @swagger.operation(
+        notes="Get a single user",
+        nickname="get",
+        parameters=[
+            {
+                "name": "username",
+                "description": "Get a single user",
+                "required": True,
+                "allowMultiple": False,
+                "dataType": 'string',
+                "paramType": "path"
+            },
+        ]
+    )
+    @marshal_with(UserResourceFields.resource_fields)
+    def get(self, username):
+        user = User.query.filter_by(username=username).first()
+        return user
