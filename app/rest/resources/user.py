@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask_restful import Resource, marshal_with, fields
+from flask_restful import Resource, marshal_with, fields, reqparse
 from flask_restful_swagger import swagger
 
 from ... import db
@@ -16,6 +16,7 @@ class UserResourceFields:
     }
 
 
+
 class UserResource(Resource):
     "User Api"
     @swagger.operation(
@@ -24,6 +25,38 @@ class UserResource(Resource):
     @marshal_with(UserResourceFields.resource_fields)
     def get(self):
         user = User.query.get(1)
+        return user
+
+    @swagger.operation(
+        notes="Sign up",
+        nickname="post",
+        parameters=[
+            {
+                "name": "username",
+                "required": True,
+                "dataType": "string",
+                "paramType": "form"
+            },
+            {
+                "name": "password",
+                "required": True,
+                "dataType": "string",
+                "paramType": "form"
+            }
+        ]
+    )
+    @marshal_with(UserResourceFields.resource_fields)
+    def post(self):
+        '''sign up'''
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', type=str)
+        parser.add_argument('password', type=str)
+        args = parser.parse_args()
+        print args
+        user = User(username=args['username'])
+        user.generate_password(args['password'])
+        db.session.add(user)
+        db.session.commit()
         return user
 
     @swagger.operation(

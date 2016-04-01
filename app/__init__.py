@@ -42,7 +42,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # flask rest api
-api = swagger.docs(Api(app), apiVersion='0.1')
+api = swagger.docs(Api(app), apiVersion='0.1', description='A Basic API')
 
 
 @login_manager.user_loader
