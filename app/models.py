@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from itsdangerous import (TimedJSONWebSignatureSerializer 
+                          as Serializer, BadSignature, SignatureExpired)
 
-from . import db, bcrypt
+from . import app, db, bcrypt
 
 
 roles_users = db.Table(
@@ -43,6 +45,22 @@ class User(db.Model):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
+
+    def generate_auth_token(self, expiration=600):
+        s = Serializer(app.config['SECRET_KEY'], expires_in = expiration)
+        return s.dumps({ 'id': self.id })
+
+    @staticmethod
+    def check_auth_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None # valid token, but expired
+        except BadSignature:
+            return None # invalid token
+        user = User.query.get(data['id'])
+        return user
 
 
 class Role(db.Model):

@@ -8,13 +8,52 @@ from ...models import User
 
 
 @swagger.model
+class LoginResourceFields:
+    resource_fields = {
+        "token": fields.String,
+    }
+
+
+class LoginResource(Resource):
+    "User login"
+    @swagger.operation(
+        notes="Login",
+        nickname="post",
+        parameters=[
+            {
+                "name": "username",
+                "required": True,
+                "dataType": "string",
+                "paramType": "form",
+            },
+            {
+                "name": "password",
+                "required": True,
+                "dataType": "string",
+                "paramType": "form",
+            }
+        ]
+    )
+    @marshal_with(LoginResourceFields.resource_fields)
+    def post(self):
+        '''login'''
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', type=str)
+        parser.add_argument('password', type=str)
+        args = parser.parse_args()
+        user = User.query.filter_by(username=args['username']).first()
+        if user and user.check_password(args['password']):
+            token = user.generate_auth_token()
+            return {'token': token.decode('ascii')}
+
+
+@swagger.model
 class UserResourceFields:
     resource_fields = {
         "id": fields.Integer,
         "username": fields.String,
         "is_active": fields.Boolean
     }
-
 
 
 class UserResource(Resource):
@@ -52,7 +91,6 @@ class UserResource(Resource):
         parser.add_argument('username', type=str)
         parser.add_argument('password', type=str)
         args = parser.parse_args()
-        print args
         user = User(username=args['username'])
         user.generate_password(args['password'])
         db.session.add(user)
