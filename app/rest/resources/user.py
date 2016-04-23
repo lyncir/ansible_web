@@ -73,7 +73,7 @@ class LogoutResource(Resource):
     def post(self):
         '''logout'''
         logout_user()
-        return None
+        return {'message': 'logout success.'}
 
 
 @swagger.model
