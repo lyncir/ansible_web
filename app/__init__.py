@@ -52,6 +52,29 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
+@login_manager.request_loader
+def load_user_from_request(request):
+    from models import User
+
+    token = request.headers.get('Authorization')
+    if token is None:
+        token = request.args.get('access_token')
+
+    if token is not None:
+        if 'token' in token:
+            token = token.split()[-1]
+        return User.check_auth_token(token)
+
+    return None
+
+
+@login_manager.token_loader
+def load_token(token):
+    from models import User
+
+    return User.check_auth_token(token)
+
+
 # import all models, views, api
 from models import *
 from views import *

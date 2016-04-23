@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from itsdangerous import (TimedJSONWebSignatureSerializer 
                           as Serializer, BadSignature, SignatureExpired)
 
@@ -32,13 +33,27 @@ groups_hosts = db.Table(
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(120))
-    is_active = db.Column(db.Boolean())
-
+    id = db.Column('id', db.Integer, primary_key=True)
+    username = db.Column('username', db.String(50), unique=True, index=True)
+    password = db.Column('password', db.String(120))
+    email = db.Column('email', db.String(50), unique=True, index=True)
+    active = db.Column('active', db.Boolean(), default=1)
+    registered_on = db.Column('reigstered_on', db.DateTime, 
+            default=datetime.utcnow())
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return self.active
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
 
     def generate_password(self, password):
         self.password = bcrypt.generate_password_hash(password)
@@ -46,7 +61,7 @@ class User(db.Model):
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
 
-    def generate_auth_token(self, expiration=600):
+    def get_auth_token(self, expiration=600):
         s = Serializer(app.config['SECRET_KEY'], expires_in = expiration)
         return s.dumps({ 'id': self.id })
 
@@ -61,6 +76,9 @@ class User(db.Model):
             return None # invalid token
         user = User.query.get(data['id'])
         return user
+
+    def __repr__(self):
+        return '<User %r>' % (self.username)
 
 
 class Role(db.Model):

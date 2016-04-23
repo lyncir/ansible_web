@@ -11,4 +11,4 @@ instance/
 .*.swp
 
 # test file
-test.py
+test.py*
