@@ -129,7 +129,8 @@ class UserResource(Resource):
         parser.add_argument('password', type=str)
         parser.add_argument('email', type=str)
         args = parser.parse_args()
-        query = db.session.query(User).filter(or_(User.username==args['username'], User.email==args['email'])).all()
+        query = db.session.query(User).filter(or_(User.username==args['username'], \
+                User.email==args['email'])).first()
         if query:
             abort(409, message="A user already exists.")
         user = User(username=args['username'], email=args['email'])
@@ -153,6 +154,7 @@ class UserResource(Resource):
     @marshal_with(UserResourceFields.resource_fields)
     @login_required
     def patch(self):
+        '''update password'''
         parser = reqparse.RequestParser()
         parser.add_argument('password', type=str)
         args = parser.parse_args()
@@ -181,9 +183,7 @@ class UserOtherResource(Resource):
         parameters=[
             {
                 "name": "username",
-                "description": "Get a single user",
                 "required": True,
-                "allowMultiple": False,
                 "dataType": 'string',
                 "paramType": "path"
             },

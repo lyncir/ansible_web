@@ -33,13 +33,13 @@ groups_hosts = db.Table(
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = db.Column('id', db.Integer, primary_key=True)
-    username = db.Column('username', db.String(50), unique=True, index=True)
-    password = db.Column('password', db.String(120))
-    email = db.Column('email', db.String(50), unique=True, index=True)
-    active = db.Column('active', db.Boolean(), default=1)
-    registered_on = db.Column('reigstered_on', db.DateTime, 
-            default=datetime.utcnow())
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, index=True)
+    password = db.Column(db.String(120))
+    email = db.Column(db.String(50), unique=True, index=True)
+    active = db.Column(db.Boolean(), default=1)
+    registered_on = db.Column(db.DateTime, default=datetime.utcnow())
+
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
 
@@ -105,13 +105,15 @@ class Host(db.Model):
     __tablename__ = 'hosts'
 
     id = db.Column(db.Integer, primary_key=True)
-    alias = db.Column(db.String(20), unique=True)
-    ip = db.Column(db.String(15))
-    ip2 = db.Column(db.String(15))
+    name = db.Column(db.String(20), unique=True, index=True)
+    host = db.Column(db.String(15))
     port = db.Column(db.Integer)
-    remote_user = db.Column(db.String(20))
+    user = db.Column(db.String(20))
 
     roles = db.relationship('Role', secondary=roles_hosts,
                             backref=db.backref('hosts', lazy='dynamic'))
     groups = db.relationship('Group', secondary=groups_hosts,
                             backref=db.backref('hosts', lazy='dynamic'))
+
+    def __repr__(self):
+        return '<Host %r>' % (self.name)
