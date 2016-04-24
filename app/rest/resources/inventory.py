@@ -100,19 +100,96 @@ class HostOtherResource(Resource):
             abort(409, message="host does not exists")
         return host
 
+    @swagger.operation(
+        notes="update a host by name",
+        nickname="patch",
+        parameters=[
+            {
+                "name": "name",
+                "required": True,
+                "dataType": "string",
+                "paramType": "path"
+            },
+            {
+                "name": "host",
+                "description": "ansible_host",
+                "required": False,
+                "dataType": "string",
+                "paramType": "form"
+            },
+            {
+                "name": "port",
+                "description": "ansible_port",
+                "required": False,
+                "dataType": "integer",
+                "paramType": "form"
+            },
+            {
+                "name": "user",
+                "description": "ansible_user",
+                "required": False,
+                "dataType": "string",
+                "paramType": "form"
+            }
+        ]
+    )
+    @marshal_with(HostResourceFields.resource_fields)
+    @login_required
     def patch(self, name):
         "update a host by name"
-        pass
+        parser = reqparse.RequestParser()
+        parser.add_argument('host', type=str)
+        parser.add_argument('port', type=int)
+        parser.add_argument('user', type=str)
+        args = parser.parse_args()
+        host = Host.query.filter_by(name=name).first()
+        if not host:
+            abort(409, message="host does not exists")
 
+        if args['host']:
+            host.host = args['host']
+        if args['port']:
+            host.port = args['port']
+        if args['user']:
+            host.user = args['user']
+        db.session.commit()
+        return host
+
+    @swagger.operation(
+        notes="delete a host by name",
+        nickname="delete",
+        parameters=[
+            {
+                "name": "name",
+                "required": True,
+                "dataType": "string",
+                "paramType": "path"
+            }
+        ]
+    )
+    @login_required
     def delete(self, name):
         "delete a host by name"
-        pass
+        host = Host.query.filter_by(name=name).first()
+        if not host:
+            abort(409, message="host does not exists")
+
+        db.session.delete(host)
+        db.session.commit()
+        return {'message': 'delete success'}
     
 
 class HostsResource(Resource):
     "Hosts api"
-
+    
+    @swagger.operation(
+        notes="list all host info",
+        nickname="get"
+    )
+    @marshal_with(HostResourceFields.resource_fields)
+    @login_required
     def get(self):
-        "Get all host info"
-        pass
+        "list all host info"
+        hosts = Host.query.all()
+        return hosts
 
