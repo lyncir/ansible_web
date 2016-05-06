@@ -30,6 +30,12 @@ groups_hosts = db.Table(
     db.Column('host_id', db.Integer(), db.ForeignKey('hosts.id')))
 
 
+groups_groups = db.Table(
+    'groups_groups',
+    db.Column('group_id', db.Integer(), db.ForeignKey('groups.id')),
+    db.Column('group_id', db.Integer(), db.ForeignKey('groups.id')))
+
+
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -99,6 +105,11 @@ class Group(db.Model):
 
     roles = db.relationship('Role', secondary=roles_groups,
                             backref=db.backref('groups', lazy='dynamic'))
+    #hosts = db.relationship('Host', secondary=groups_hosts,
+    #                        backref=db.backref('groups', lazy='dynamic'))
+
+    def __repr__(self):
+        return '<Group %r>' % (self.name)
 
 class Host(db.Model):
     '''About server'''

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import time
-from . import celery
+#from . import celery
 
 
-@celery.task()
+#@celery.task()
 def add(a, b):
     return a + b
