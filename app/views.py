@@ -2,9 +2,11 @@
 
 from . import app
 from utils import get_inventory
+from tasks import test
 
 
 @app.route('/')
 def index():
-    print get_inventory()
+    #print test()
+    print get_inventory().get_hosts()
     return "ansible web"

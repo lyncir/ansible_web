@@ -1,6 +1,8 @@
 # -*- coding: utf8 -*-
 
-from ansible.inventory import Host as Inv_Host, Group as Inv_Group, Inventory
+from ansible.inventory import Inventory
+from ansible.inventory.host import Host as Inv_Host
+from ansible.inventory.group import Group as Inv_Group
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
 
@@ -13,7 +15,7 @@ def get_inventory():
     variable_manager = VariableManager()
     inventory = Inventory(loader=loader,
                           variable_manager=variable_manager,
-                          host_list=[])
+                          host_list=None)
     # Add all host to 'all' group and ungrouped host to 'ungrouped' group.
     ungrouped = inventory.get_group('ungrouped')
     all = inventory.get_group('all')
@@ -36,5 +38,4 @@ def get_inventory():
                 inv_group.add_host(inv_host)
         else:
             ungrouped.add_host(inv_host)
-
     return inventory
