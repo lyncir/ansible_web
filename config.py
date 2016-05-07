@@ -19,4 +19,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 CELERY_BROKER_URL = 'amqp://guest@localhost//'
 CELERY_RESULT_BACKEND = 'amqp://guest@locahost//'
 
+# YML Template path
+YML_TEMP_PATH = os.path.join(_basedir, 'app/yml_temp')
+
 del os

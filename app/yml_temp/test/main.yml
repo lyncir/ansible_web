@@ -1,0 +1,6 @@
+---
+- hosts: '{{ host }}'
+  remote_user: '{{ user }}'
+  tasks:
+    - name: test file
+      shell: echo "123" > /home/chenchangming/1.txt

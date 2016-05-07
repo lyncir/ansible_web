@@ -5,7 +5,3 @@ ansible web write by flask
 3. python manage.py createsuperuser
 4. python manage.py runserver
 5. celery -A app.celery worker
-
-
-http://swagger.io/specification/
-
