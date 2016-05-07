@@ -16,6 +16,8 @@ def get_inventory():
     inventory = Inventory(loader=loader,
                           variable_manager=variable_manager,
                           host_list=None)
+    # must be clear pattern_cache
+    inventory.clear_pattern_cache()
     # Add all host to 'all' group and ungrouped host to 'ungrouped' group.
     ungrouped = inventory.get_group('ungrouped')
     all = inventory.get_group('all')

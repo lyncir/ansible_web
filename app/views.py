@@ -8,5 +8,5 @@ from tasks import test
 @app.route('/')
 def index():
     #print test()
-    print get_inventory().get_hosts()
+    get_inventory()
     return "ansible web"
