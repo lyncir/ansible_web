@@ -102,22 +102,30 @@ def get_inventory():
 
 class Runner(object):
 
-    def __init__(self, playbooks, run_data, private_key_file=None, passwords=None, verbosity=0):
+    def __init__(self, playbooks, run_data, private_key_file=None, password=None, verbosity=0):
 
         self.playbooks = playbooks
         self.run_data = run_data
         
         self.options = Options()
+        if private_key_file:
+            private_key_file = os.path.join(app.config['KEY_DIR'], private_key_file)
         self.options.private_key_file = private_key_file
         self.options.verbosity = verbosity
         self.options.connection = 'ssh' # Need a connection type "local", "smart" or "ssh"
-        self.options.become = True
+        if isinstance(run_data, dict):
+            if run_data.get('user') == 'root':
+                self.options.become = False
+            else:
+                self.options.become = True
         self.options.become_method = 'sudo'
         self.options.become_user = 'root'
 
         # Pass Needed
-        if passwords is None:
+        if password is None:
             passwords = {'conn_pass': '', 'become_pass': ''}
+        else:
+            passwords = {'conn_pass': password, 'become_pass': password}
         self.passwords = passwords
 
         self.loader = DataLoader()
@@ -132,7 +140,7 @@ class Runner(object):
             playbooks = []
             for pb_name in self.playbooks:
                 playbooks.append(os.path.join(os.path.join(app.config['YML_TEMP_PATH'], pb_name), 'main.yml'))
-
+        
         pbex = PlaybookExecutor(
                 playbooks=playbooks,
                 inventory=self.inventory,

@@ -12,11 +12,12 @@ def add(a, b):
 
 @celery.task()
 def test():
-    run_data = {'host': 'all', 'user': 'user'}
-    passwords = {'conn_pass': 'password', 'become_pass': 'passowrd'}
+    run_data = {'host': 'dev', 'user': 'root'}
     runner = Runner(
             playbooks=['test'],
             run_data=run_data,
-            passwords=passwords,
+            private_key_file='key_name',
+            #password=password,
+            password=None,
             verbosity=3)
     print runner.run()

@@ -22,4 +22,7 @@ CELERY_RESULT_BACKEND = 'amqp://guest@locahost//'
 # YML Template path
 YML_TEMP_PATH = os.path.join(_basedir, 'app/yml_temp')
 
+# Key dir
+KEY_DIR = os.path.join(_basedir, 'app/keydir')
+
 del os

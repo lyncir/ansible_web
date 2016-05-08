@@ -12,3 +12,6 @@ instance/
 
 # test file
 test.py*
+
+# key file
+app/keydir/*
