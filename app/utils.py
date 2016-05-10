@@ -140,6 +140,7 @@ class Runner(object):
             playbooks = []
             for pb_name in self.playbooks:
                 playbooks.append(os.path.join(os.path.join(app.config['YML_TEMP_PATH'], pb_name), 'main.yml'))
+
         
         pbex = PlaybookExecutor(
                 playbooks=playbooks,

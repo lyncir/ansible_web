@@ -4,4 +4,6 @@ ansible web write by flask
 2. python manage.py init_db
 3. python manage.py createsuperuser
 4. python manage.py runserver
-5. celery -A app.celery worker
+# bug: celery must gevent pool
+5. celery -A app.celery worker -P gevent
+6. celery -A app.celery multi start 4 -l INFO -P gevent 
