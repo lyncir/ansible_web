@@ -6,6 +6,6 @@ from tasks import test
 
 @app.route('/')
 def index():
-    print test.delay()
-    #print test()
+    #print test.delay()
+    print test()
     return "ansible web"

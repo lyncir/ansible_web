@@ -128,3 +128,19 @@ class Host(db.Model):
 
     def __repr__(self):
         return '<Host %r>' % (self.name)
+
+
+class Job(db.Model):
+    '''About jobs'''
+    __tablename__ = 'jobs'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    job_id = db.Column(db.String(50), unique=True, index=True)
+    playbooks = db.Column(db.String(200))
+    run_data = db.Column(db.String(200))
+    private_key_file = db.Column(db.String(200))
+    password = db.Column(db.String(120))
+    verbosity = db.Column(db.Integer)
+    stats = db.Column(db.String(500))
+    started = db.Column(db.DateTime)
+    finished = db.Column(db.DateTime)

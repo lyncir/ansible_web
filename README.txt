@@ -7,3 +7,5 @@ ansible web write by flask
 # bug: celery must gevent pool
 5. celery -A app.celery worker -P gevent
 6. celery -A app.celery multi start 4 -l INFO -P gevent 
+7. config ansble plugins: ansible.cfg 
+callback_plugins = /path/to/project/app/plugins/callback_plugins

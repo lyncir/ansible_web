@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 
+import os
 from . import celery
 from utils import Runner
 
@@ -17,7 +18,7 @@ def test():
             playbooks=['test'],
             run_data=run_data,
             private_key_file='key_name',
-            #password=password,
+            # password=password,
             password=None,
             verbosity=3)
     print runner.run()

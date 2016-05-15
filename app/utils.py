@@ -106,13 +106,12 @@ class Runner(object):
 
         self.playbooks = playbooks
         self.run_data = run_data
-        
         self.options = Options()
         if private_key_file:
             private_key_file = os.path.join(app.config['KEY_DIR'], private_key_file)
         self.options.private_key_file = private_key_file
         self.options.verbosity = verbosity
-        self.options.connection = 'ssh' # Need a connection type "local", "smart" or "ssh"
+        self.options.connection = 'ssh'  # Need a connection type "local", "smart" or "ssh"
         if isinstance(run_data, dict):
             if run_data.get('user') == 'root':
                 self.options.become = False
@@ -141,7 +140,6 @@ class Runner(object):
             for pb_name in self.playbooks:
                 playbooks.append(os.path.join(os.path.join(app.config['YML_TEMP_PATH'], pb_name), 'main.yml'))
 
-        
         pbex = PlaybookExecutor(
                 playbooks=playbooks,
                 inventory=self.inventory,
