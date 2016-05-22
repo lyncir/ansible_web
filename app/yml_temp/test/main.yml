@@ -3,5 +3,5 @@
   remote_user: '{{ user }}'
   tasks:
     - name: test file
-      #shell: echo "123" > /home/chenchangming/1.txt
-      shell: echo "123" > /1.txt
+      shell: echo "123" > /tmp/1.txt
+      #shell: echo "123" > /1.txt

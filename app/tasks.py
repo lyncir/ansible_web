@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-import time
 
-import os
 from . import celery
 from utils import Runner
 
@@ -12,13 +10,11 @@ def add(a, b):
 
 
 @celery.task()
-def test():
-    run_data = {'host': 'dev', 'user': 'root'}
+def deploy(playbooks, run_data, private_key_file=None, password=None, verbosity=0):
     runner = Runner(
-            playbooks=['test'],
+            playbooks=playbooks,
             run_data=run_data,
-            private_key_file='key_name',
-            # password=password,
-            password=None,
-            verbosity=3)
+            private_key_file=private_key_file,
+            password=password,
+            verbosity=verbosity)
     print runner.run()

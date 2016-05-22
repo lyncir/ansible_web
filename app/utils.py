@@ -84,7 +84,8 @@ def get_inventory():
         inv_host = Inv_Host(name=host.name)
         inv_host.set_variable('ansible_host', host.host)
         inv_host.set_variable('ansible_port', host.port)
-        inv_host.set_variable('ansible_user', host.user)
+        # ansible playbooks will use this user more then vars
+        #inv_host.set_variable('ansible_user', host.user)
         all.add_host(inv_host)
 
         if host.groups:

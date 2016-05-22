@@ -25,4 +25,8 @@ YML_TEMP_PATH = os.path.join(_basedir, 'app/yml_temp')
 # Key dir
 KEY_DIR = os.path.join(_basedir, 'app/keydir')
 
+# Job password key
+JOB_KEY = '\x93,\xf9\xfb\x1c@\x8f:*.\xc3\xe5\xaa3\xa3B\x1f\xf7\x8e\xcd\x14\xcer\x01'
+
+
 del os
