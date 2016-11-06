@@ -116,6 +116,8 @@ class Runner(object):
         if isinstance(run_data, dict):
             if run_data.get('user') == 'root':
                 self.options.become = False
+            elif run_data.get('become') == 'no':
+                self.options.become = False
             else:
                 self.options.become = True
         self.options.become_method = 'sudo'

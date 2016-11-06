@@ -16,3 +16,6 @@ test.py*
 
 # key file
 app/keydir/*
+
+# deploy file
+*.retry

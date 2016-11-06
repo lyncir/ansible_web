@@ -17,4 +17,4 @@ def deploy(playbooks, run_data, private_key_file=None, password=None, verbosity=
             private_key_file=private_key_file,
             password=password,
             verbosity=verbosity)
-    print runner.run()
+    return runner.run()
